@@ -38,7 +38,7 @@ spec:
     spec:
       tolerations:
         {{- include "jupyterhub.userTolerations" . | nindent 8 }}
-      nodeSelector: {{ toJson .Values.singleuser.nodeSelector }}
+      # nodeSelector: {{ toJson .Values.singleuser.nodeSelector }}
       {{- if include "jupyterhub.userNodeAffinityRequired" . }}
       affinity:
         nodeAffinity:
@@ -48,32 +48,32 @@ spec:
       {{- end }}
       terminationGracePeriodSeconds: 0
       automountServiceAccountToken: false
-      {{- if .Values.singleuser.imagePullSecret.enabled }}
-      imagePullSecrets:
-        - name: {{ if .hook -}} hook- {{- end -}} singleuser-image-credentials
-      {{- end }}
+      # {{- if .Values.singleuser.imagePullSecret.enabled }}
+      # imagePullSecrets:
+      #   - name: {{ if .hook -}} hook- {{- end -}} singleuser-image-credentials
+      # {{- end }}
       initContainers:
-        - name: image-pull-singleuser
-          image: {{ .Values.singleuser.image.name }}:{{ .Values.singleuser.image.tag }}
-          {{- with .Values.singleuser.image.pullPolicy }}
-          imagePullPolicy: {{ . }}
-          {{- end }}
-          command:
-            - /bin/sh
-            - -c
-            - echo "Pulling complete"
-        {{- range $k, $container := .Values.singleuser.profileList }}
-        {{- if $container.kubespawner_override }}
-        {{- if $container.kubespawner_override.image }}
-        - name: image-pull-singleuser-profilelist-{{ $k }}
-          image: {{ $container.kubespawner_override.image }}
-          command:
-            - /bin/sh
-            - -c
-            - echo "Pulling complete"
-        {{- end }}
-        {{- end }}
-        {{- end }}
+        # - name: image-pull-singleuser
+        #   image: {{ .Values.singleuser.image.name }}:{{ .Values.singleuser.image.tag }}
+        #   {{- with .Values.singleuser.image.pullPolicy }}
+        #   imagePullPolicy: {{ . }}
+        #   {{- end }}
+        #   command:
+        #     - /bin/sh
+        #     - -c
+        #     - echo "Pulling complete"
+        # {{- range $k, $container := .Values.singleuser.profileList }}
+        # {{- if $container.kubespawner_override }}
+        # {{- if $container.kubespawner_override.image }}
+        # - name: image-pull-singleuser-profilelist-{{ $k }}
+        #   image: {{ $container.kubespawner_override.image }}
+        #   command:
+        #     - /bin/sh
+        #     - -c
+        #     - echo "Pulling complete"
+        # {{- end }}
+        # {{- end }}
+        # {{- end }}
         {{- if not .Values.singleuser.cloudMetadata.enabled }}
         - name: image-pull-metadata-block
           image: {{ .Values.singleuser.networkTools.image.name }}:{{ .Values.singleuser.networkTools.image.tag }}
@@ -96,17 +96,17 @@ spec:
             - -c
             - echo "Pulling complete"
         {{- end }}
-        {{- range $k, $container := .Values.singleuser.extraContainers }}
-        - name: image-pull-singleuser-extra-container-{{ $k }}
-          image: {{ $container.image }}
-          {{- with $container.imagePullPolicy }}
-          imagePullPolicy: {{ . }}
-          {{- end }}
-          command:
-            - /bin/sh
-            - -c
-            - echo "Pulling complete"
-        {{- end }}
+        # {{- range $k, $container := .Values.singleuser.extraContainers }}
+        # - name: image-pull-singleuser-extra-container-{{ $k }}
+        #   image: {{ $container.image }}
+        #   {{- with $container.imagePullPolicy }}
+        #   imagePullPolicy: {{ . }}
+        #   {{- end }}
+        #   command:
+        #     - /bin/sh
+        #     - -c
+        #     - echo "Pulling complete"
+        # {{- end }}
       containers:
         - name: pause
           image: {{ .Values.prePuller.pause.image.name }}:{{ .Values.prePuller.pause.image.tag }}

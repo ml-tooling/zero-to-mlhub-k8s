@@ -17,13 +17,13 @@ data:
     {{- end }}
   {{- end }}
 {{- end }}
-{{- $_ := set $values "hub" (omit $values.hub "cookieSecret" "extraEnv" "extraConfigMap") -}}
+{{- $_ := set $values "hub" (omit $values.hub "extraEnv") -}}
 {{- $_ := set $values.hub "services" dict }}
-{{- range $key, $service := .Values.hub.services }}
-  {{- if $service.apiToken }}
-    {{- $_ := set $values.hub.services $key (omit $service "apiToken") }}
-  {{- end }}
-{{- end }}
+# {{- range $key, $service := .Values.hub.services }}
+#   {{- if $service.apiToken }}
+#     {{- $_ := set $values.hub.services $key (omit $service "apiToken") }}
+#   {{- end }}
+# {{- end }}
 {{- /* copy values.singleuser */ -}}
 {{- $_ := set $values "singleuser" (omit .Values.singleuser "imagePullSecret") }}
 {{- $_ := set $values.singleuser "imagePullSecret" (omit .Values.singleuser.imagePullSecret "password") }}

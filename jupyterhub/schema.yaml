@@ -4,29 +4,29 @@ properties:
   hub:
     type: object
     properties:
-      cookieSecret:
-        type:
-          - string
-          - "null"
-        description: |
-          A 32-byte cryptographically secure randomly generated string used to sign values of
-          secure cookies set by the hub. If unset, jupyterhub will generate one on startup and
-          save it in the file `jupyterhub_cookie_secret` in the `/srv/jupyterhub` directory of
-          the hub container. A value set here will make JupyterHub overwrite any previous file.
+      # cookieSecret:
+      #   type:
+      #     - string
+      #     - "null"
+      #   description: |
+      #     A 32-byte cryptographically secure randomly generated string used to sign values of
+      #     secure cookies set by the hub. If unset, jupyterhub will generate one on startup and
+      #     save it in the file `jupyterhub_cookie_secret` in the `/srv/jupyterhub` directory of
+      #     the hub container. A value set here will make JupyterHub overwrite any previous file.
 
-          You do not need to set this at all if you are using the default configuration for
-          storing databases - sqlite on a persistent volume (with `hub.db.type` set to the
-          default `sqlite-pvc`). If you are using an external database, then you must set this
-          value explicitly - or your users will keep getting logged out each time the hub pod
-          restarts.
+      #     You do not need to set this at all if you are using the default configuration for
+      #     storing databases - sqlite on a persistent volume (with `hub.db.type` set to the
+      #     default `sqlite-pvc`). If you are using an external database, then you must set this
+      #     value explicitly - or your users will keep getting logged out each time the hub pod
+      #     restarts.
 
-          Changing this value will all user logins to be invalidated. If this secret leaks,
-          *immediately* change it to something else, or user data can be compromised
+      #     Changing this value will all user logins to be invalidated. If this secret leaks,
+      #     *immediately* change it to something else, or user data can be compromised
 
-          ```sh
-          # to generate a value, run
-          openssl rand -hex 32
-          ```
+      #     ```sh
+      #     # to generate a value, run
+      #     openssl rand -hex 32
+      #     ```
       imagePullPolicy:
         type: string
         enum:
@@ -155,77 +155,77 @@ properties:
       db:
         type: object
         properties:
-          type:
-            type: string
-            enum:
-              - sqlite-pvc
-              - sqlite-memory
-              - mysql
-              - postgres
-            description: |
-              Type of database backend to use for the hub database.
+          # type:
+          #   type: string
+          #   enum:
+          #     - sqlite-pvc
+          #     - sqlite-memory
+          #     - mysql
+          #     - postgres
+          #   description: |
+          #     Type of database backend to use for the hub database.
 
-              The Hub requires a persistent database to function, and this lets you specify
-              where it should be stored.
+          #     The Hub requires a persistent database to function, and this lets you specify
+          #     where it should be stored.
 
-              The various options are:
+          #     The various options are:
 
-              1. **sqlite-pvc**
+          #     1. **sqlite-pvc**
 
-                 Use an `sqlite` database kept on a persistent volume attached to the hub.
+          #        Use an `sqlite` database kept on a persistent volume attached to the hub.
 
-                 By default, this disk is created by the cloud provider using
-                 *dynamic provisioning* configured by a [storage
-                 class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
-                 You can customize how this disk is created / attached by
-                 setting various properties under `hub.db.pvc`.
+          #        By default, this disk is created by the cloud provider using
+          #        *dynamic provisioning* configured by a [storage
+          #        class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+          #        You can customize how this disk is created / attached by
+          #        setting various properties under `hub.db.pvc`.
 
-                 This is the default setting, and should work well for most cloud provider
-                 deployments.
+          #        This is the default setting, and should work well for most cloud provider
+          #        deployments.
 
-              2. **sqlite-memory**
+          #     2. **sqlite-memory**
 
-                 Use an in-memory `sqlite` database. This should only be used for testing,
-                 since the database is erased whenever the hub pod restarts - causing the hub
-                 to lose all memory of users who had logged in before.
+          #        Use an in-memory `sqlite` database. This should only be used for testing,
+          #        since the database is erased whenever the hub pod restarts - causing the hub
+          #        to lose all memory of users who had logged in before.
 
-                 When using this for testing, make sure you delete all other objects that the
-                 hub has created (such as user pods, user PVCs, etc) every time the hub restarts.
-                 Otherwise you might run into errors about duplicate resources.
+          #        When using this for testing, make sure you delete all other objects that the
+          #        hub has created (such as user pods, user PVCs, etc) every time the hub restarts.
+          #        Otherwise you might run into errors about duplicate resources.
 
-              3. **mysql**
+          #     3. **mysql**
 
-                 Use an externally hosted mysql database.
+          #        Use an externally hosted mysql database.
 
-                 You have to specify an sqlalchemy connection string for the mysql database you
-                 want to connect to in `hub.db.url` if using this option.
+          #        You have to specify an sqlalchemy connection string for the mysql database you
+          #        want to connect to in `hub.db.url` if using this option.
 
-                 The general format of the connection string is:
-                 ```
-                 mysql+pymysql://<db-username>:<db-password>@<db-hostname>:<db-port>/<db-name>
-                 ```
+          #        The general format of the connection string is:
+          #        ```
+          #        mysql+pymysql://<db-username>:<db-password>@<db-hostname>:<db-port>/<db-name>
+          #        ```
 
-                 The user specified in the connection string must have the rights to create
-                 tables in the database specified.
+          #        The user specified in the connection string must have the rights to create
+          #        tables in the database specified.
 
-                 Note that if you use this, you *must* also set `hub.cookieSecret`.
+          #        Note that if you use this, you *must* also set `hub.cookieSecret`.
 
-              4. **postgres**
+          #     4. **postgres**
 
-                 Use an externally hosted postgres database.
+          #        Use an externally hosted postgres database.
 
-                 You have to specify an sqlalchemy connection string for the postgres database you
-                 want to connect to in `hub.db.url` if using this option.
+          #        You have to specify an sqlalchemy connection string for the postgres database you
+          #        want to connect to in `hub.db.url` if using this option.
 
-                 The general format of the connection string is:
-                 ```
-                 postgres+psycopg2://<db-username>:<db-password>@<db-hostname>:<db-port>/<db-name>
-                 ```
+          #        The general format of the connection string is:
+          #        ```
+          #        postgres+psycopg2://<db-username>:<db-password>@<db-hostname>:<db-port>/<db-name>
+          #        ```
 
-                 The user specified in the connection string must have the rights to create
-                 tables in the database specified.
+          #        The user specified in the connection string must have the rights to create
+          #        tables in the database specified.
 
-                 Note that if you use this, you *must* also set `hub.cookieSecret`.
+          #        Note that if you use this, you *must* also set `hub.cookieSecret`.
           pvc:
             type: object
             description: |
@@ -255,20 +255,20 @@ properties:
                 type: string
                 description: |
                   Size of disk to request for the database disk.
-          url:
-            type:
-              - string
-              - "null"
-            description: |
-              Connection string when `hub.db.type` is mysql or postgres.
+          # url:
+          #   type:
+          #     - string
+          #     - "null"
+          #   description: |
+          #     Connection string when `hub.db.type` is mysql or postgres.
 
-              See documentation for `hub.db.type` for more details on the format of this property.
-          password:
-            type:
-              - string
-              - "null"
-            description: |
-              Password for the database when `hub.db.type` is mysql or postgres.
+          #     See documentation for `hub.db.type` for more details on the format of this property.
+          # password:
+          #   type:
+          #     - string
+          #     - "null"
+          #   description: |
+          #     Password for the database when `hub.db.type` is mysql or postgres.
       labels:
         type: object
         description: |
@@ -310,39 +310,39 @@ properties:
             - Passing parameters to some custom code specified with `extraConfig`
             - Passing parameters to an authenticator or spawner that can be directly customized
               by environment variables (rarer)
-      extraConfig:
-        type: object
-        description: |
-          Arbitrary extra python based configuration that should be in `jupyterhub_config.py`.
+      # extraConfig:
+      #   type: object
+      #   description: |
+      #     Arbitrary extra python based configuration that should be in `jupyterhub_config.py`.
 
-          This is the *escape hatch* - if you want to configure JupyterHub to do something specific
-          that is not present here as an option, you can write the raw Python to do it here.
+      #     This is the *escape hatch* - if you want to configure JupyterHub to do something specific
+      #     that is not present here as an option, you can write the raw Python to do it here.
 
-          extraConfig is a *dict*, so there can be multiple configuration snippets
-          under different names.
-          The configuration sections are run in alphabetical order.
+      #     extraConfig is a *dict*, so there can be multiple configuration snippets
+      #     under different names.
+      #     The configuration sections are run in alphabetical order.
 
-          Non-exhaustive examples of things you can do here:
-            - Subclass authenticator / spawner to do a custom thing
-            - Dynamically launch different images for different sets of images
-            - Inject an auth token from GitHub authenticator into user pod
-            - Anything else you can think of!
+      #     Non-exhaustive examples of things you can do here:
+      #       - Subclass authenticator / spawner to do a custom thing
+      #       - Dynamically launch different images for different sets of images
+      #       - Inject an auth token from GitHub authenticator into user pod
+      #       - Anything else you can think of!
 
-          Since this is usually a multi-line string, you want to format it using YAML's
-          [| operator](https://yaml.org/spec/1.2/spec.html#id2795688).
+      #     Since this is usually a multi-line string, you want to format it using YAML's
+      #     [| operator](https://yaml.org/spec/1.2/spec.html#id2795688).
 
-          For example:
-            ```yaml
-            hub:
-              extraConfig:
-                myConfig.py: |
-                  c.JupyterHub.something = 'something'
-                  c.Spawner.somethingelse = 'something else'
-            ```
+      #     For example:
+      #       ```yaml
+      #       hub:
+      #         extraConfig:
+      #           myConfig.py: |
+      #             c.JupyterHub.something = 'something'
+      #             c.Spawner.somethingelse = 'something else'
+      #       ```
 
-          No validation of this python is performed! If you make a mistake here, it will probably
-          manifest as either the hub pod going into `Error` or `CrashLoopBackoff` states, or in
-          some special cases, the hub running but... just doing very random things. Be careful!
+      #     No validation of this python is performed! If you make a mistake here, it will probably
+      #     manifest as either the hub pod going into `Error` or `CrashLoopBackoff` states, or in
+      #     some special cases, the hub running but... just doing very random things. Be careful!
       uid:
         type: integer
         minimum: 0
@@ -603,33 +603,33 @@ properties:
               Minimum number of pods to be available during the voluntary disruptions.
     required:
       - secretToken
-  auth:
-    type: object
-    properties:
-      state:
-        type: object
-        properties:
-          enabled:
-            type: boolean
-            description: |
-              Enable persisting auth_state (if available).
-              See: http://jupyterhub.readthedocs.io/en/latest/api/auth.html
-          cryptoKey:
-            type:
-              - string
-              - "null"
-            description: |
-              auth_state will be encrypted and stored in the Hub’s database. This can include things like authentication tokens, etc. to be passed to Spawners as environment variables.
-              Encrypting auth_state requires the cryptography package.
-              It must contain one (or more, separated by ;) 32-byte encryption keys. These can be either base64 or hex-encoded.
-              The JUPYTERHUB_CRYPT_KEY environment variable for the hub pod is set using this entry.
+  # auth:
+  #   type: object
+  #   properties:
+  #     state:
+  #       type: object
+  #       properties:
+  #         enabled:
+  #           type: boolean
+  #           description: |
+  #             Enable persisting auth_state (if available).
+  #             See: http://jupyterhub.readthedocs.io/en/latest/api/auth.html
+  #         cryptoKey:
+  #           type:
+  #             - string
+  #             - "null"
+  #           description: |
+  #             auth_state will be encrypted and stored in the Hub’s database. This can include things like authentication tokens, etc. to be passed to Spawners as environment variables.
+  #             Encrypting auth_state requires the cryptography package.
+  #             It must contain one (or more, separated by ;) 32-byte encryption keys. These can be either base64 or hex-encoded.
+  #             The JUPYTERHUB_CRYPT_KEY environment variable for the hub pod is set using this entry.
 
-              ```sh
-              # to generate a value, run
-              openssl rand -hex 32
-              ```
+  #             ```sh
+  #             # to generate a value, run
+  #             openssl rand -hex 32
+  #             ```
 
-              If encryption is unavailable, auth_state cannot be persisted.
+  #             If encryption is unavailable, auth_state cannot be persisted.
 
 
   singleuser:
@@ -637,448 +637,448 @@ properties:
     description: |
       Options for customizing the environment that is provided to the users after they log in.
     properties:
-      cpu:
-        type: object
-        description: |
-          Set CPU limits & guarantees that are enforced for each user.
-          See: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-        properties:
-          limit:
-            type:
-              - string
-              - "null"
-          guarantee:
-            type:
-              - string
-              - "null"
-      memory:
-        type: object
-        description: |
-          Set Memory limits & guarantees that are enforced for each user.
+      # cpu:
+      #   type: object
+      #   description: |
+      #     Set CPU limits & guarantees that are enforced for each user.
+      #     See: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+      #   properties:
+      #     limit:
+      #       type:
+      #         - string
+      #         - "null"
+      #     guarantee:
+      #       type:
+      #         - string
+      #         - "null"
+      # memory:
+      #   type: object
+      #   description: |
+      #     Set Memory limits & guarantees that are enforced for each user.
           
-          See the [Kubernetes docs](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container)
-          for more info.
-        properties:
-          limit:
-            type:
-              - string
-              - "null"
-          guarantee:
-            type:
-              - string
-              - "null"
-            description: |
-              Note that this field is referred to as *requests* by the Kubernetes API.
-      imagePullSecret:
-        type: object
-        description: |
-          Creates an image pull secret for you and makes the user pods utilize
-          it, allowing them to pull images from private image registries.
+      #     See the [Kubernetes docs](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container)
+      #     for more info.
+      #   properties:
+      #     limit:
+      #       type:
+      #         - string
+      #         - "null"
+      #     guarantee:
+      #       type:
+      #         - string
+      #         - "null"
+      #       description: |
+      #         Note that this field is referred to as *requests* by the Kubernetes API.
+      # imagePullSecret:
+      #   type: object
+      #   description: |
+      #     Creates an image pull secret for you and makes the user pods utilize
+      #     it, allowing them to pull images from private image registries.
           
-          Using this configuration option automates the following steps that
-          normally is required to pull from private image registries.
+      #     Using this configuration option automates the following steps that
+      #     normally is required to pull from private image registries.
           
-          ```sh
-          # you won't need to run this manually...
-          kubectl create secret docker-registry singleuser-image-credentials \
-            --docker-server=<REGISTRY> \
-            --docker-username=<USERNAME> \
-            --docker-email=<EMAIL> \
-            --docker-password=<PASSWORD>
-          ```
+      #     ```sh
+      #     # you won't need to run this manually...
+      #     kubectl create secret docker-registry singleuser-image-credentials \
+      #       --docker-server=<REGISTRY> \
+      #       --docker-username=<USERNAME> \
+      #       --docker-email=<EMAIL> \
+      #       --docker-password=<PASSWORD>
+      #     ```
 
-          ```yaml
-          # you won't need to specify this manually...
-          spec:
-            imagePullSecrets:
-              - name: singleuser-image-credentials
-          ```
+      #     ```yaml
+      #     # you won't need to specify this manually...
+      #     spec:
+      #       imagePullSecrets:
+      #         - name: singleuser-image-credentials
+      #     ```
 
-          To learn the username and password fields to access a gcr.io registry
-          from a Kubernetes cluster not associated with the same google cloud
-          credentials, look into [this
-          guide](http://docs.heptio.com/content/private-registries/pr-gcr.html)
-          and read the notes about the password.
-        properties:
-          enabled:
-            type: boolean
-            description: |
-              Enable the creation of a Kubernetes Secret containing credentials
-              to access a image registry. By enabling this, user pods and image
-              puller pods will also be configured to use these credentials when
-              they pull their container images.
+      #     To learn the username and password fields to access a gcr.io registry
+      #     from a Kubernetes cluster not associated with the same google cloud
+      #     credentials, look into [this
+      #     guide](http://docs.heptio.com/content/private-registries/pr-gcr.html)
+      #     and read the notes about the password.
+      #   properties:
+      #     enabled:
+      #       type: boolean
+      #       description: |
+      #         Enable the creation of a Kubernetes Secret containing credentials
+      #         to access a image registry. By enabling this, user pods and image
+      #         puller pods will also be configured to use these credentials when
+      #         they pull their container images.
 
-          registry:
-            type: string
-            description: |
-              Name of the private registry you want to create a credential set
-              for. It will default to Docker Hub's image registry.
+      #     registry:
+      #       type: string
+      #       description: |
+      #         Name of the private registry you want to create a credential set
+      #         for. It will default to Docker Hub's image registry.
 
-              Examples:
-                - https://index.docker.io/v1/
-                - quay.io
-                - eu.gcr.io
-                - alexmorreale.privatereg.net
-          username:
-            type: string
-            description: |
-              Name of the user you want to use to connect to your private
-              registry. For external gcr.io, you will use the `_json_key`.
+      #         Examples:
+      #           - https://index.docker.io/v1/
+      #           - quay.io
+      #           - eu.gcr.io
+      #           - alexmorreale.privatereg.net
+      #     username:
+      #       type: string
+      #       description: |
+      #         Name of the user you want to use to connect to your private
+      #         registry. For external gcr.io, you will use the `_json_key`.
 
-              Examples:
-                - alexmorreale
-                - alex@pfc.com
-                - _json_key
-          password:
-            type: string
-            description: |
-              Password of the user you want to use to connect to your private
-              registry.
+      #         Examples:
+      #           - alexmorreale
+      #           - alex@pfc.com
+      #           - _json_key
+      #     password:
+      #       type: string
+      #       description: |
+      #         Password of the user you want to use to connect to your private
+      #         registry.
 
-              Examples:
-                - plaintextpassword
-                - abc123SECRETzyx098
+      #         Examples:
+      #           - plaintextpassword
+      #           - abc123SECRETzyx098
 
-              For gcr.io registries the password will be a big JSON blob for a
-              Google cloud service account, it should look something like below.
+      #         For gcr.io registries the password will be a big JSON blob for a
+      #         Google cloud service account, it should look something like below.
                             
-              ```yaml
-              password: |-
-                {
-                  "type": "service_account",
-                  "project_id": "jupyter-se",
-                  "private_key_id": "f2ba09118a8d3123b3321bd9a7d6d0d9dc6fdb85",
-                  ...
-                }
-              ```
+      #         ```yaml
+      #         password: |-
+      #           {
+      #             "type": "service_account",
+      #             "project_id": "jupyter-se",
+      #             "private_key_id": "f2ba09118a8d3123b3321bd9a7d6d0d9dc6fdb85",
+      #             ...
+      #           }
+      #         ```
 
-              Learn more in [this
-              guide](http://docs.heptio.com/content/private-registries/pr-gcr.html).
-      image:
-        type: object
-        description: |
-          Set custom image name / tag used for spawned users.
+      #         Learn more in [this
+      #         guide](http://docs.heptio.com/content/private-registries/pr-gcr.html).
+      # image:
+      #   type: object
+      #   description: |
+      #     Set custom image name / tag used for spawned users.
 
-          This image is used to launch the pod for each user.
-        properties:
-          name:
-            type: string
-            description: |
-              Name of the image, without the tag.
+      #     This image is used to launch the pod for each user.
+      #   properties:
+      #     name:
+      #       type: string
+      #       description: |
+      #         Name of the image, without the tag.
 
-              Examples:
-                - yuvipanda/wikimedia-hub-user
-                - gcr.io/my-project/my-user-image
-          tag:
-            type: string
-            description: |
-              The tag of the image to use.
+      #         Examples:
+      #           - yuvipanda/wikimedia-hub-user
+      #           - gcr.io/my-project/my-user-image
+      #     tag:
+      #       type: string
+      #       description: |
+      #         The tag of the image to use.
 
-              This is the value after the `:` in your full image name.
-          pullPolicy:
-            type: string
-            enum:
-              - IfNotPresent
-              - Always
-              - Never
-            description: |
-              Set the imagePullPolicy on the singleuser pods that are spun up by the hub.
+      #         This is the value after the `:` in your full image name.
+      #     pullPolicy:
+      #       type: string
+      #       enum:
+      #         - IfNotPresent
+      #         - Always
+      #         - Never
+      #       description: |
+      #         Set the imagePullPolicy on the singleuser pods that are spun up by the hub.
 
-              See the [Kubernetes docs](https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-              for more info.
-      profileList:
-        type: list
-        description: |
-          For more information about the profile list, see [KubeSpawner's
-          documentation](https://jupyterhub-kubespawner.readthedocs.io/en/latest/spawner.html#kubespawner.KubeSpawner)
-          as this is simply a passthrough to that configuration.
+      #         See the [Kubernetes docs](https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+      #         for more info.
+      # profileList:
+      #   type: list
+      #   description: |
+      #     For more information about the profile list, see [KubeSpawner's
+      #     documentation](https://jupyterhub-kubespawner.readthedocs.io/en/latest/spawner.html#kubespawner.KubeSpawner)
+      #     as this is simply a passthrough to that configuration.
 
-          **NOTE**: The image-pullers are aware of the overrides of images in
-          `singleuser.profileList` but they won't be if you configure it in
-          JupyterHub's configuration of '`c.KubeSpawner.profile_list`.
+      #     **NOTE**: The image-pullers are aware of the overrides of images in
+      #     `singleuser.profileList` but they won't be if you configure it in
+      #     JupyterHub's configuration of '`c.KubeSpawner.profile_list`.
 
-          ```yaml
-          singleuser:
-            profileList:
-              - display_name: "Default: Shared, 8 CPU cores"
-                description: "Your code will run on a shared machine with CPU only."
-                default: True
-              - display_name: "Personal, 4 CPU cores & 26GB RAM, 1 NVIDIA Tesla K80 GPU"
-                description: "Your code will run a personal machine with a GPU."
-                kubespawner_override:
-                  extra_resource_limits:
-                    nvidia.com/gpu: "1"
-          ```
-      schedulerStrategy:
-        type:
-          - string
-          - "null"
-        description: |
-          Deprecated and no longer does anything. Use the user-scheduler instead
-          in order to accomplish a good packing of the user pods.
-      extraTolerations:
-        type: list
-        description: |
-          Tolerations allow a pod to be scheduled on nodes with taints. These
-          are additional tolerations other than the user pods and core pods
-          default ones `hub.jupyter.org/dedicated=user:NoSchedule` or
-          `hub.jupyter.org/dedicated=core:NoSchedule`. Note that a duplicate set
-          of tolerations exist where `/` is replaced with `_` as the Google
-          cloud does not support the character `/` yet in the toleration.
+      #     ```yaml
+      #     singleuser:
+      #       profileList:
+      #         - display_name: "Default: Shared, 8 CPU cores"
+      #           description: "Your code will run on a shared machine with CPU only."
+      #           default: True
+      #         - display_name: "Personal, 4 CPU cores & 26GB RAM, 1 NVIDIA Tesla K80 GPU"
+      #           description: "Your code will run a personal machine with a GPU."
+      #           kubespawner_override:
+      #             extra_resource_limits:
+      #               nvidia.com/gpu: "1"
+      #     ```
+      # schedulerStrategy:
+      #   type:
+      #     - string
+      #     - "null"
+      #   description: |
+      #     Deprecated and no longer does anything. Use the user-scheduler instead
+      #     in order to accomplish a good packing of the user pods.
+      # extraTolerations:
+      #   type: list
+      #   description: |
+      #     Tolerations allow a pod to be scheduled on nodes with taints. These
+      #     are additional tolerations other than the user pods and core pods
+      #     default ones `hub.jupyter.org/dedicated=user:NoSchedule` or
+      #     `hub.jupyter.org/dedicated=core:NoSchedule`. Note that a duplicate set
+      #     of tolerations exist where `/` is replaced with `_` as the Google
+      #     cloud does not support the character `/` yet in the toleration.
 
-          See the [Kubernetes docs](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
-          for more info.
+      #     See the [Kubernetes docs](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
+      #     for more info.
 
-          Pass this field an array of
-          [`Toleration`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core)
-          objects.
-      extraNodeAffinity:
-        type: object
-        description: |
-          Affinities describe where pods prefer or require to be scheduled, they
-          may prefer or require a node where they are to be scheduled to have a
-          certain label (node affinity). They may also require to be scheduled
-          in proximity or with a lack of proximity to another pod (pod affinity
-          and anti pod affinity).
+      #     Pass this field an array of
+      #     [`Toleration`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core)
+      #     objects.
+      # extraNodeAffinity:
+      #   type: object
+      #   description: |
+      #     Affinities describe where pods prefer or require to be scheduled, they
+      #     may prefer or require a node where they are to be scheduled to have a
+      #     certain label (node affinity). They may also require to be scheduled
+      #     in proximity or with a lack of proximity to another pod (pod affinity
+      #     and anti pod affinity).
           
-          See the [Kubernetes
-          docs](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
-          for more info.
-        properties:
-          required:
-            type: list
-            description: |
-              Pass this field an array of
-              [`NodeSelectorTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#nodeselectorterm-v1-core)
-              objects.
-          preferred:
-            type: list
-            description: |
-              Pass this field an array of
-              [`PreferredSchedulingTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#preferredschedulingterm-v1-core)
-              objects.
-      extraPodAffinity:
-        type: object
-        description: |
-          See the description of `singleuser.extraNodeAffinity`.
-        properties:
-          required:
-            type: list
-            description: |
-              Pass this field an array of
-              [`PodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#podaffinityterm-v1-core)
-              objects.
-          preferred:
-            type: list
-            description: |
-              Pass this field an array of
-              [`WeightedPodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#weightedpodaffinityterm-v1-core)
-              objects.
-      extraPodAntiAffinity:
-        type: object
-        description: |
-          See the description of `singleuser.extraNodeAffinity`.
-        properties:
-          required:
-            type: list
-            description: |
-              Pass this field an array of
-              [`PodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#podaffinityterm-v1-core)
-              objects.
-          preferred:
-            type: list
-            description: |
-              Pass this field an array of
-              [`WeightedPodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#weightedpodaffinityterm-v1-core)
-              objects.
+      #     See the [Kubernetes
+      #     docs](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
+      #     for more info.
+      #   properties:
+      #     required:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`NodeSelectorTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#nodeselectorterm-v1-core)
+      #         objects.
+      #     preferred:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`PreferredSchedulingTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#preferredschedulingterm-v1-core)
+      #         objects.
+      # extraPodAffinity:
+      #   type: object
+      #   description: |
+      #     See the description of `singleuser.extraNodeAffinity`.
+      #   properties:
+      #     required:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`PodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#podaffinityterm-v1-core)
+      #         objects.
+      #     preferred:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`WeightedPodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#weightedpodaffinityterm-v1-core)
+      #         objects.
+      # extraPodAntiAffinity:
+      #   type: object
+      #   description: |
+      #     See the description of `singleuser.extraNodeAffinity`.
+      #   properties:
+      #     required:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`PodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#podaffinityterm-v1-core)
+      #         objects.
+      #     preferred:
+      #       type: list
+      #       description: |
+      #         Pass this field an array of
+      #         [`WeightedPodAffinityTerm`](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#weightedpodaffinityterm-v1-core)
+      #         objects.
 
 
-  scheduling:
-    type: object
-    description: |
-      Objects for customizing the scheduling of various pods on the nodes and
-      related labels.
-    properties:
-      userScheduler:
-        type: object
-        description: |
-          The user scheduler is making sure that user pods are scheduled
-          tight on nodes, this is useful for autoscaling of user node pools.
-        properties:
-          enabled:
-            type: boolean
-            description: |
-              Enables the user scheduler.
-          replicas:
-            type: integer
-            description: |
-              You can have multiple schedulers to share the workload or improve
-              availability on node failure.
-          image:
-            type: object
-            description: |
-              The image containing the [kube-scheduler
-              binary](https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-scheduler-amd64).
-            properties:
-              name:
-                type: string
-              tag:
-                type:
-                  - string
-                  - "null"
-          pdb:
-            type: object
-            description: |
-              Set the Pod Disruption Budget for the user scheduler.
+  # scheduling:
+  #   type: object
+  #   description: |
+  #     Objects for customizing the scheduling of various pods on the nodes and
+  #     related labels.
+  #   properties:
+  #     userScheduler:
+  #       type: object
+  #       description: |
+  #         The user scheduler is making sure that user pods are scheduled
+  #         tight on nodes, this is useful for autoscaling of user node pools.
+  #       properties:
+  #         enabled:
+  #           type: boolean
+  #           description: |
+  #             Enables the user scheduler.
+  #         replicas:
+  #           type: integer
+  #           description: |
+  #             You can have multiple schedulers to share the workload or improve
+  #             availability on node failure.
+  #         image:
+  #           type: object
+  #           description: |
+  #             The image containing the [kube-scheduler
+  #             binary](https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/kube-scheduler-amd64).
+  #           properties:
+  #             name:
+  #               type: string
+  #             tag:
+  #               type:
+  #                 - string
+  #                 - "null"
+  #         pdb:
+  #           type: object
+  #           description: |
+  #             Set the Pod Disruption Budget for the user scheduler.
 
-              See [the Kubernetes
-              documentation](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
-              for more details about disruptions.
-            properties:
-              enabled:
-                type: boolean
-                description: |
-                  Whether PodDisruptionBudget is enabled for the user scheduler.
-              minAvailable:
-                type: integer
-                description: |
-                  Minimum number of pods to be available during the voluntary disruptions.
-      podPriority:
-        type: object
-        description: |
-          Pod Priority is used to allow real users evict placeholder pods that
-          in turn triggers a scale up by a cluster autoscaler. So, enabling this
-          option will only make sense if the following conditions are met:
+  #             See [the Kubernetes
+  #             documentation](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
+  #             for more details about disruptions.
+  #           properties:
+  #             enabled:
+  #               type: boolean
+  #               description: |
+  #                 Whether PodDisruptionBudget is enabled for the user scheduler.
+  #             minAvailable:
+  #               type: integer
+  #               description: |
+  #                 Minimum number of pods to be available during the voluntary disruptions.
+  #     podPriority:
+  #       type: object
+  #       description: |
+  #         Pod Priority is used to allow real users evict placeholder pods that
+  #         in turn triggers a scale up by a cluster autoscaler. So, enabling this
+  #         option will only make sense if the following conditions are met:
 
-          1. Your Kubernetes cluster has at least version 1.11
-          2. A cluster autoscaler is installed
-          3. user-placeholer pods is configured to get a priority equal or
-             higher than the cluster autoscaler's priority cutoff
-          4. Normal user pods have a higher priority than the user-placeholder
-             pods
+  #         1. Your Kubernetes cluster has at least version 1.11
+  #         2. A cluster autoscaler is installed
+  #         3. user-placeholer pods is configured to get a priority equal or
+  #            higher than the cluster autoscaler's priority cutoff
+  #         4. Normal user pods have a higher priority than the user-placeholder
+  #            pods
 
-          Note that if the default priority cutoff if not configured on cluster
-          autoscaler, it will currently default to 0, and that in the future
-          this is meant to be lowered. If your cloud provider is installing the
-          cluster autoscaler for you, they may also configure this specifically.
+  #         Note that if the default priority cutoff if not configured on cluster
+  #         autoscaler, it will currently default to 0, and that in the future
+  #         this is meant to be lowered. If your cloud provider is installing the
+  #         cluster autoscaler for you, they may also configure this specifically.
 
-          Recommended settings for a cluster autoscaler...
+  #         Recommended settings for a cluster autoscaler...
 
-          ... with a priority cutoff of -10 (GKE):
+  #         ... with a priority cutoff of -10 (GKE):
 
-          ```yaml
-          podPriority:
-            enabled: true
-            globalDefault: false
-            defaultPriority: 0
-            userPlaceholderPriority: -10
-          ```
+  #         ```yaml
+  #         podPriority:
+  #           enabled: true
+  #           globalDefault: false
+  #           defaultPriority: 0
+  #           userPlaceholderPriority: -10
+  #         ```
 
-          ... with a priority cutoff of 0:
+  #         ... with a priority cutoff of 0:
 
-          ```yaml
-          podPriority:
-            enabled: true
-            globalDefault: true
-            defaultPriority: 10
-            userPlaceholderPriority: 0
-          ```
-        properties:
-          enabled:
-            type: bool
-          globalDefault:
-            type: bool
-            description: |
-              Warning! This will influence all pods in the cluster.
+  #         ```yaml
+  #         podPriority:
+  #           enabled: true
+  #           globalDefault: true
+  #           defaultPriority: 10
+  #           userPlaceholderPriority: 0
+  #         ```
+  #       properties:
+  #         enabled:
+  #           type: bool
+  #         globalDefault:
+  #           type: bool
+  #           description: |
+  #             Warning! This will influence all pods in the cluster.
 
-              The priority a pod usually get is 0. But this can be overridden
-              with a PriorityClass resource if it is declared to be the global
-              default. This configuration option allows for the creation of such
-              global default.
-          defaultPriority:
-            type: int
-            description: |
-              The actual value for the default pod priority.
-          userPlaceholderPriority:
-            type: int
-            description: |
-              The actual value for the user-placeholder pods' priority.
-      userPlaceholder:
-        type: object
-        description: |
-          User placeholders simulate users but will thanks to PodPriority be
-          evicted by the cluster autoscaler if a real user shows up. In this way
-          placeholders allow you to create a headroom for the real users and
-          reduce the risk of a user having to wait for a node to be added. Be
-          sure to use the the continuous image puller as well along with
-          placeholders, so the images are also available when real users arrive.
+  #             The priority a pod usually get is 0. But this can be overridden
+  #             with a PriorityClass resource if it is declared to be the global
+  #             default. This configuration option allows for the creation of such
+  #             global default.
+  #         defaultPriority:
+  #           type: int
+  #           description: |
+  #             The actual value for the default pod priority.
+  #         userPlaceholderPriority:
+  #           type: int
+  #           description: |
+  #             The actual value for the user-placeholder pods' priority.
+  #     userPlaceholder:
+  #       type: object
+  #       description: |
+  #         User placeholders simulate users but will thanks to PodPriority be
+  #         evicted by the cluster autoscaler if a real user shows up. In this way
+  #         placeholders allow you to create a headroom for the real users and
+  #         reduce the risk of a user having to wait for a node to be added. Be
+  #         sure to use the the continuous image puller as well along with
+  #         placeholders, so the images are also available when real users arrive.
 
-          To test your setup efficiently, you can adjust the amount of user
-          placeholders with the following command:
-          ```sh
-          # Configure to have 3 user placeholders
-          kubectl scale sts/user-placeholder --replicas=3
-          ```
-        properties:
-          enabled:
-            type: bool
-          replicas:
-            type: int
-            description: |
-              How many placeholder pods would you like to have?
-          resources:
-            type: object
-            description: |
-              Unless specified here, the placeholder pods will request the same
-              resources specified for the real singleuser pods.
-      corePods:
-        type: object
-        description: |
-          These settings influence the core pods like the hub, proxy and
-          user-scheduler pods.
-        properties:
-          nodeAffinity:
-            type: object
-            description: |
-              Where should pods be scheduled? Perhaps on nodes with a certain
-              label is preferred or even required?
-            properties:
-              matchNodePurpose:
-                type: string
-                enum:
-                  - ignore
-                  - prefer
-                  - require
-                description: |
-                  Decide if core pods *ignore*, *prefer* or *require* to
-                  schedule on nodes with this label:
-                  ```
-                  hub.jupyter.org/node-purpose=core
-                  ```
-      userPods:
-        type: object
-        description: |
-          These settings influence the user pods like the user-placeholder,
-          user-dummy and actual user pods named like jupyter-someusername.
-        properties:
-          nodeAffinity:
-            type: object
-            description: |
-              Where should pods be scheduled? Perhaps on nodes with a certain
-              label is preferred or even required?
-            properties:
-              matchNodePurpose:
-                type: string
-                enum:
-                  - ignore
-                  - prefer
-                  - require
-                description: |
-                  Decide if user pods *ignore*, *prefer* or *require* to
-                  schedule on nodes with this label:
-                  ```
-                  hub.jupyter.org/node-purpose=user
-                  ```
+  #         To test your setup efficiently, you can adjust the amount of user
+  #         placeholders with the following command:
+  #         ```sh
+  #         # Configure to have 3 user placeholders
+  #         kubectl scale sts/user-placeholder --replicas=3
+  #         ```
+  #       properties:
+  #         enabled:
+  #           type: bool
+  #         replicas:
+  #           type: int
+  #           description: |
+  #             How many placeholder pods would you like to have?
+  #         resources:
+  #           type: object
+  #           description: |
+  #             Unless specified here, the placeholder pods will request the same
+  #             resources specified for the real singleuser pods.
+  #     corePods:
+  #       type: object
+  #       description: |
+  #         These settings influence the core pods like the hub, proxy and
+  #         user-scheduler pods.
+  #       properties:
+  #         nodeAffinity:
+  #           type: object
+  #           description: |
+  #             Where should pods be scheduled? Perhaps on nodes with a certain
+  #             label is preferred or even required?
+  #           properties:
+  #             matchNodePurpose:
+  #               type: string
+  #               enum:
+  #                 - ignore
+  #                 - prefer
+  #                 - require
+  #               description: |
+  #                 Decide if core pods *ignore*, *prefer* or *require* to
+  #                 schedule on nodes with this label:
+  #                 ```
+  #                 hub.jupyter.org/node-purpose=core
+  #                 ```
+  #     userPods:
+  #       type: object
+  #       description: |
+  #         These settings influence the user pods like the user-placeholder,
+  #         user-dummy and actual user pods named like jupyter-someusername.
+  #       properties:
+  #         nodeAffinity:
+  #           type: object
+  #           description: |
+  #             Where should pods be scheduled? Perhaps on nodes with a certain
+  #             label is preferred or even required?
+  #           properties:
+  #             matchNodePurpose:
+  #               type: string
+  #               enum:
+  #                 - ignore
+  #                 - prefer
+  #                 - require
+  #               description: |
+  #                 Decide if user pods *ignore*, *prefer* or *require* to
+  #                 schedule on nodes with this label:
+  #                 ```
+  #                 hub.jupyter.org/node-purpose=user
+  #                 ```
   ingress:
     type: object
     properties:
