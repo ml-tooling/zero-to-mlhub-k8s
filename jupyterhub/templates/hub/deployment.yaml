@@ -50,6 +50,9 @@ spec:
           persistentVolumeClaim:
             claimName: hub-db-dir
         {{- end }}
+        - name: user-config
+          configMap:
+            name: hub-user-config
       {{- if .Values.rbac.enabled }}
       serviceAccountName: hub
       {{- end }}
@@ -84,6 +87,9 @@ spec:
               subPath: {{ .Values.hub.db.pvc.subPath | quote }}
               {{- end }}
             {{- end }}
+            - mountPath: /resources/jupyterhub_user_config.py
+              name: user-config
+              subPath: jupyterhub_user_config.py
           resources:
             {{- .Values.hub.resources | toYaml | trimSuffix "\n" | nindent 12 }}
           {{- with .Values.hub.image.pullPolicy }}
