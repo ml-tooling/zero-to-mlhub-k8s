@@ -25,7 +25,7 @@ data:
 #   {{- end }}
 # {{- end }}
 {{- /* copy values.singleuser */ -}}
-{{- $_ := set $values "singleuser" }}
+# {{- $_ := set $values "singleuser" }}
 # {{- $_ := set $values.singleuser "imagePullSecret" }}
 {{- /* preserve behavior of deprecated hub.extraConfigMap */ -}}
 # {{- $_ := set $values "custom" (merge dict $values.custom .Values.hub.extraConfigMap) }}
