@@ -233,8 +233,7 @@ singleuser:
   # cmd:
   # defaultUrl:
 
-
-# scheduling:
+scheduling:
 #    userScheduler:
 #      enabled: false #true
 #     replicas: 2
@@ -250,35 +249,35 @@ singleuser:
 #       requests:
 #         cpu: 50m
 #         memory: 256Mi
-#   podPriority:
-#     enabled: false
-#     globalDefault: false
-#     defaultPriority: 0
-#     userPlaceholderPriority: -10
+  podPriority:
+    enabled: false
+    globalDefault: false
+    defaultPriority: 0
+    userPlaceholderPriority: -10
 #   userPlaceholder:
 #     enabled: true
 #     replicas: 0
-#   corePods:
-#     nodeAffinity:
-#       matchNodePurpose: prefer
+  corePods:
+    nodeAffinity:
+      matchNodePurpose: prefer
 #   userPods:
 #     nodeAffinity:
 #       matchNodePurpose: prefer
 
 
-prePuller:
-  hook:
-    enabled: true
-    image:
-      name: jupyterhub/k8s-image-awaiter
-      tag: '0.8.2'
-  continuous:
-    enabled: true
-  extraImages: {}
-  pause:
-    image:
-      name: gcr.io/google_containers/pause
-      tag: '3.0'
+# prePuller:
+#   hook:
+#     enabled: true
+#     image:
+#       name: jupyterhub/k8s-image-awaiter
+#       tag: '0.8.2'
+#   continuous:
+#     enabled: true
+#   extraImages: {}
+#   pause:
+#     image:
+#       name: gcr.io/google_containers/pause
+#       tag: '3.0'
 
 
 ingress:
@@ -298,5 +297,5 @@ cull:
   maxAge: 0
 
 
-# debug:
-#   enabled: false
+debug:
+  enabled: false

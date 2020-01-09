@@ -267,3 +267,29 @@ component: {{ include "jupyterhub.componentLabel" . }}
 #   {{- end }}
 # {{- end }}
 # {{- end }}
+
+{{- define "jupyterhub.coreAffinity" -}}
+{{- $require := eq .Values.scheduling.corePods.nodeAffinity.matchNodePurpose "require" -}}
+{{- $prefer := eq .Values.scheduling.corePods.nodeAffinity.matchNodePurpose "prefer" -}}
+{{- if or $require $prefer -}}
+affinity:
+  nodeAffinity:
+    {{- if $require }}
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: hub.jupyter.org/node-purpose
+            operator: In
+            values: [core]
+    {{- end }}
+    {{- if $prefer }}
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: hub.jupyter.org/node-purpose
+              operator: In
+              values: [core]
+    {{- end }}
+{{- end }}
+{{- end }}

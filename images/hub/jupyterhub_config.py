@@ -238,10 +238,9 @@ for key in (
 
 # set_config_if_not_none(c.KubeSpawner, 'lifecycle_hooks', 'singleuser.lifecycleHooks')
 
-# Gives spawned containers access to the API of the hub
-# TODO: commented out. If errors, comment in again!
-# c.JupyterHub.hub_connect_ip = os.environ['HUB_SERVICE_HOST']
-# c.JupyterHub.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
+# Gives spawned containers access to the API of the hub (without it, routing does not work)
+c.JupyterHub.hub_connect_ip = os.environ['HUB_SERVICE_HOST']
+c.JupyterHub.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
 
 # # Allow switching authenticators easily
 # auth_type = get_config('auth.type')
@@ -427,9 +426,9 @@ if not cloud_metadata.get('enabled', False):
     c.KubeSpawner.init_containers.append(ip_block_container)
 
 
-# if get_config('debug.enabled', False):
-#     c.JupyterHub.log_level = 'DEBUG'
-#     c.Spawner.debug = True
+if get_config('debug.enabled', False):
+    c.JupyterHub.log_level = 'DEBUG'
+    c.Spawner.debug = True
 
 
 # extra_config = get_config('hub.extraConfig', {})
