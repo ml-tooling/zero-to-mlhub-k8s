@@ -234,9 +234,9 @@ singleuser:
   # defaultUrl:
 
 
-scheduling:
-   userScheduler:
-     enabled: false #true
+# scheduling:
+#    userScheduler:
+#      enabled: false #true
 #     replicas: 2
 #     logLevel: 4
 #     image:

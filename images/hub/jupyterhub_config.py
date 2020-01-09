@@ -32,13 +32,13 @@ c.JupyterHub.tornado_settings = {
 }
 
 
-def camelCaseify(s):
-    """convert snake_case to camelCase
+# def camelCaseify(s):
+#     """convert snake_case to camelCase
 
-    For the common case where some_value is set from someValue
-    so we don't have to specify the name twice.
-    """
-    return re.sub(r"_([a-z])", lambda m: m.group(1).upper(), s)
+#     For the common case where some_value is set from someValue
+#     so we don't have to specify the name twice.
+#     """
+#     return re.sub(r"_([a-z])", lambda m: m.group(1).upper(), s)
 
 
 # configure the hub db connection
@@ -145,36 +145,36 @@ c.KubeSpawner.namespace = os.environ.get('POD_NAMESPACE', 'default')
 #     c.KubeSpawner.image_pull_secrets = 'singleuser-image-credentials'
 
 # scheduling:
-if get_config('scheduling.userScheduler.enabled'):
-    c.KubeSpawner.scheduler_name = os.environ['HELM_RELEASE_NAME'] + "-user-scheduler"
-if get_config('scheduling.podPriority.enabled'):
-    c.KubeSpawner.priority_class_name = os.environ['HELM_RELEASE_NAME'] + "-default-priority"
+# if get_config('scheduling.userScheduler.enabled'):
+#     c.KubeSpawner.scheduler_name = os.environ['HELM_RELEASE_NAME'] + "-user-scheduler"
+# if get_config('scheduling.podPriority.enabled'):
+#     c.KubeSpawner.priority_class_name = os.environ['HELM_RELEASE_NAME'] + "-default-priority"
 
 # add node-purpose affinity
-match_node_purpose = get_config('scheduling.userPods.nodeAffinity.matchNodePurpose')
-if match_node_purpose:
-    node_selector = dict(
-        matchExpressions=[
-            dict(
-                key="hub.jupyter.org/node-purpose",
-                operator="In",
-                values=["user"],
-            )
-        ],
-    )
-    if match_node_purpose == 'prefer':
-        c.KubeSpawner.node_affinity_preferred.append(
-            dict(
-                weight=100,
-                preference=node_selector,
-            ),
-        )
-    elif match_node_purpose == 'require':
-        c.KubeSpawner.node_affinity_required.append(node_selector)
-    elif match_node_purpose == 'ignore':
-        pass
-    else:
-        raise ValueError("Unrecognized value for matchNodePurpose: %r" % match_node_purpose)
+# match_node_purpose = get_config('scheduling.userPods.nodeAffinity.matchNodePurpose')
+# if match_node_purpose:
+#     node_selector = dict(
+#         matchExpressions=[
+#             dict(
+#                 key="hub.jupyter.org/node-purpose",
+#                 operator="In",
+#                 values=["user"],
+#             )
+#         ],
+#     )
+#     if match_node_purpose == 'prefer':
+#         c.KubeSpawner.node_affinity_preferred.append(
+#             dict(
+#                 weight=100,
+#                 preference=node_selector,
+#             ),
+#         )
+#     elif match_node_purpose == 'require':
+#         c.KubeSpawner.node_affinity_required.append(node_selector)
+#     elif match_node_purpose == 'ignore':
+#         pass
+#     else:
+#         raise ValueError("Unrecognized value for matchNodePurpose: %r" % match_node_purpose)
 
 # add dedicated-node toleration
 for key in (
