@@ -13,11 +13,12 @@ Most prominent changes:
 - modifying ports to make tunnelling of ssh possible
 - changes of default values, e.g. the used images
 - changes of paths, e.g. the ssl secret mount path
+- separated the deployment configuration and the configuration for JupyterHub & the Spawner
 
 We do not push the helm chart to a repository for now, so feel free to download it from the [mlhub releases page](https://github.com/ml-tooling/ml-hub/releases) or to create the package yourself via `helm package jupyterhub/`.
 
-You can then deploy the chart via `helm upgrade --install mlhub packaged-chart.tgz --namespace $namespace --values config.yaml`.
-The config.yaml can be used to overrride default values.
+You can then deploy the chart via `helm upgrade --install mlhub packaged-chart.tgz --namespace $namespace --values config.yaml --set-file userConfig=./jupyterhub_user_config.py`.
+The `config.yaml` can be used to overrride default deployment values, the `userConfig` can be used to configure JupyterHub and the Spawner. For more details, check out the [MLHub repo](https://github.com/ml-tooling/ml-hub).
 
 ---
 <br/>
