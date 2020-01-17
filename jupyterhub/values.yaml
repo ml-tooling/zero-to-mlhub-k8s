@@ -1,8 +1,14 @@
 custom: {}
 
+mlhub:
+  baseUrl: /
+  secretToken: ''
+  debug: false
+  env:
+
 hub:
   # NOTE: baseUrl has to be set to configure other services during deployment (together with proxy.secretToken only hub-configurations that have to be set here instead of jupyterhub-user config py)
-  baseUrl: /
+  # baseUrl: /
   service:
     type: ClusterIP
     annotations: {}
@@ -46,7 +52,7 @@ hub:
   extraVolumeMounts: []
   image:
     name: mltooling/ml-hub
-    tag: '0.1.11'
+    tag: 2.0.0-SNAPSHOT #'0.1.11'
   resources:
     requests:
       cpu: 200m
@@ -76,7 +82,7 @@ rbac:
 
 proxy:
   # NOTE: baseUrl has to be set to configure other services during deployment
-  secretToken: ''
+  # secretToken: ''
   service:
     type: LoadBalancer
     labels: {}
@@ -88,7 +94,7 @@ proxy:
   chp:
     image:
       name: mltooling/ml-hub
-      tag: 0.1.11
+      tag: 2.0.0-SNAPSHOT #0.1.11
     resources:
       requests:
         cpu: 200m
@@ -288,14 +294,15 @@ ingress:
   tls: []
 
 
-cull:
-  enabled: true
-  users: false
-  timeout: 3600
-  every: 600
-  concurrency: 10
-  maxAge: 0
+# Can be set by the user in the jupyterhub_user_config.py
+# cull:
+#   enabled: true
+#   users: false
+#   timeout: 3600
+#   every: 600
+#   concurrency: 10
+#   maxAge: 0
 
 
-debug:
-  enabled: false
+#debug:
+#  enabled: false

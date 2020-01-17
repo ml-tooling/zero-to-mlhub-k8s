@@ -1,9 +1,13 @@
+mlhub:
+  secretToken: '0000000000000000000000000000000000000000000000000000000000000000'
+  baseUrl: /
+
 hub:
   service:
     type: ClusterIP
     ports:
       nodePort:
-  baseUrl: /
+  #baseUrl: /
   cookieSecret: mock
   publicURL: mock-public-url
   nodeSelector:
@@ -68,7 +72,7 @@ rbac:
 
 
 proxy:
-  secretToken: '0000000000000000000000000000000000000000000000000000000000000000'
+  #secretToken: '0000000000000000000000000000000000000000000000000000000000000000'
   service:
     type: LoadBalancer
     labels:
@@ -128,25 +132,25 @@ proxy:
               cidr: 0.0.0.0/0
 
 
-auth:
-  type: dummy
-  whitelist:
-    users:
-      - mock
-  admin:
-    access: true
-    users:
-      - mock
-  dummy:
-    password:
-  ldap:
-    dn:
-      search: {}
-      user: {}
-    user: {}
-  state:
-    enabled: true
-    cryptoKey: mock-crypto-key
+# auth:
+#   type: dummy
+#   whitelist:
+#     users:
+#       - mock
+#   admin:
+#     access: true
+#     users:
+#       - mock
+#   dummy:
+#     password:
+#   ldap:
+#     dn:
+#       search: {}
+#       user: {}
+#     user: {}
+#   state:
+#     enabled: true
+#     cryptoKey: mock-crypto-key
 
 
 singleuser:

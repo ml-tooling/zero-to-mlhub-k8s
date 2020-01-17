@@ -69,11 +69,11 @@ def get_config(key, default=None):
     return value
 
 
-def set_config_if_not_none(cparent, name, key):
-    """
-    Find a config item of a given name, set the corresponding Jupyter
-    configuration item if not None
-    """
-    data = get_config(key)
-    if data is not None:
-        setattr(cparent, name, data)
+# def set_config_if_not_none(cparent, name, key):
+#     """
+#     Find a config item of a given name, set the corresponding Jupyter
+#     configuration item if not None
+#     """
+#     data = get_config(key)
+#     if data is not None:
+#         setattr(cparent, name, data)

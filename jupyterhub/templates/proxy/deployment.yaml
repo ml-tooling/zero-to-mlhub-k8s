@@ -1,5 +1,5 @@
-{{- $manualHTTPS := and .Values.proxy.https.enabled (eq .Values.proxy.https.type "manual") -}}
-{{- $manualHTTPSwithsecret := and .Values.proxy.https.enabled (eq .Values.proxy.https.type "secret") -}}
+{{- $manualHTTPS := and .Values.mlhub.env.SSL_ENABLED (eq .Values.proxy.https.type "manual") -}}
+{{- $manualHTTPSwithsecret := and .Values.mlhub.env.SSL_ENABLED (eq .Values.proxy.https.type "secret") -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,7 +64,7 @@ spec:
           env:
             - name: ADDITIONAL_ARGS
               {{- $args := "--ip=0.0.0.0 --api-ip=0.0.0.0 --api-port=8001 --port=8000 --default-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT) --error-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)/hub/error" }}
-              {{- if .Values.debug.enabled }}
+              {{- if .Values.mlhub.debug }}
               {{- $args = printf "%s %s" $args "--log-level=debug" }}
               {{- end }}
               value: {{ $args | quote }}
@@ -94,6 +94,12 @@ spec:
             - name: {{ $key | quote }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.mlhub.env }}
+            {{- range $key, $value := .Values.mlhub.env }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
             {{- end }}
             {{- end }}
           {{- with .Values.proxy.chp.image.pullPolicy }}

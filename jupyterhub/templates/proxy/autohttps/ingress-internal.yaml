@@ -1,4 +1,4 @@
-{{- $HTTPS := .Values.proxy.https.enabled -}}
+{{- $HTTPS := .Values.mlhub.env.SSL_ENABLED -}}
 {{- $autoHTTPS := and $HTTPS (eq .Values.proxy.https.type "letsencrypt") .Values.proxy.https.hosts -}}
 {{- if $autoHTTPS -}}
 # This is solely used to provide auto HTTPS with our bundled kube-lego

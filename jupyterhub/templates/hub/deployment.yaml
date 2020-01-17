@@ -102,7 +102,7 @@ spec:
           env:
             - name: ADDITIONAL_ARGS
                 {{- $args := "--config /resources/jupyterhub_config.py" }}
-                {{- if .Values.debug.enabled }}
+                {{- if .Values.mlhub.debug }}
                 {{- $args = printf "%s %s" $args "--debug" }}
                 {{- end }}
                 {{- /*
@@ -156,6 +156,12 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
+            {{- if .Values.mlhub.env }}
+            {{- range $key, $value := .Values.mlhub.env }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
           ports:
             - containerPort: 8081
               name: hub
@@ -171,9 +177,9 @@ spec:
           # livenessProbe:
           #   initialDelaySeconds: 30
           #   httpGet:
-          #     path: {{ .Values.hub.baseUrl }}/hub/health
+          #     path: {{ .Values.mlhub.baseUrl }}/hub/health
           #     port: hub
           readinessProbe:
             httpGet:
-              path: {{ .Values.hub.baseUrl }}/hub/health
+              path: {{ .Values.mlhub.baseUrl }}/hub/health
               port: hub

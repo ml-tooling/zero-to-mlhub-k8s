@@ -1,4 +1,4 @@
-{{- $HTTPS := (and .Values.proxy.https.hosts .Values.proxy.https.enabled) }}
+{{- $HTTPS := (and .Values.proxy.https.hosts .Values.mlhub.env.SSL_ENABLED) }}
 {{- $autoHTTPS := (and $HTTPS (eq .Values.proxy.https.type "letsencrypt")) }}
 {{- if (and $autoHTTPS .Values.rbac.enabled) -}}
 # This is way too many permissions, but apparently the nginx-controller

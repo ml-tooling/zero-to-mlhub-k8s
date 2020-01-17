@@ -1,4 +1,4 @@
-{{- $HTTPS := (and .Values.proxy.https.hosts .Values.proxy.https.enabled) }}
+{{- $HTTPS := (and .Values.proxy.https.hosts .Values.mlhub.env.SSL_ENABLED) }}
 {{- $autoHTTPS := (and $HTTPS (eq .Values.proxy.https.type "letsencrypt")) }}
 {{- if $autoHTTPS -}}
 apiVersion: apps/v1
@@ -55,7 +55,7 @@ spec:
             - --configmap={{ .Release.Namespace }}/nginx-proxy-config
             - --ingress-class=jupyterhub-proxy-tls
             - --watch-namespace={{ .Release.Namespace }}
-            {{- if .Values.debug.enabled }}
+            {{- if .Values.mlhub.debug }}
             - --v=3
             {{- end }}
           env:

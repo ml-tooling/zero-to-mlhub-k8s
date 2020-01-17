@@ -14,6 +14,7 @@ Most prominent changes:
 - changes of default values, e.g. the used images
 - changes of paths, e.g. the ssl secret mount path
 - separated the deployment configuration and the configuration for JupyterHub & the Spawner
+- removed a few Kubernetes resources such as the image puller etc.
 
 We do not push the helm chart to a repository for now, so feel free to download it from the [mlhub releases page](https://github.com/ml-tooling/ml-hub/releases) or to create the package yourself via `helm package jupyterhub/`.
 

@@ -14,7 +14,7 @@ from z2jh import get_config #, set_config_if_not_none
 # at the rate required.
 AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 
-c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
+# c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 
 # Connect to a proxy running in a different pod
 c.ConfigurableHTTPProxy.api_url = 'http://{}:{}'.format(os.environ['PROXY_API_SERVICE_HOST'], int(os.environ['PROXY_API_SERVICE_PORT']))
@@ -63,33 +63,33 @@ c.JupyterHub.tornado_settings = {
 #     if cfg_key is None:
 #         cfg_key = camelCaseify(trait)
 #     set_config_if_not_none(c.JupyterHub, trait, 'hub.' + cfg_key)
-c.JupyterHub.base_url = get_config("hub.baseUrl")
+c.JupyterHub.base_url = get_config("mlhub.baseUrl")
 
 c.JupyterHub.ip = os.environ['PROXY_PUBLIC_SERVICE_HOST']
 c.JupyterHub.port = int(os.environ['PROXY_PUBLIC_SERVICE_PORT'])
 
 # the hub should listen on all interfaces, so the proxy can access it
-c.JupyterHub.hub_ip = '0.0.0.0'
+#c.JupyterHub.hub_ip = '0.0.0.0'
 
 # implement common labels
 # this duplicates the jupyterhub.commonLabels helper
-common_labels = c.KubeSpawner.common_labels = {}
-common_labels['app'] = get_config(
-    "nameOverride",
-    default=get_config("Chart.Name", "jupyterhub"),
-)
-common_labels['heritage'] = "jupyterhub"
-chart_name = get_config('Chart.Name')
-chart_version = get_config('Chart.Version')
-if chart_name and chart_version:
-    common_labels['chart'] = "{}-{}".format(
-        chart_name, chart_version.replace('+', '_'),
-    )
-release = get_config('Release.Name')
-if release:
-    common_labels['release'] = release
+# common_labels = c.KubeSpawner.common_labels = {}
+# common_labels['app'] = get_config(
+#     "nameOverride",
+#     default=get_config("Chart.Name", "jupyterhub"),
+# )
+# common_labels['heritage'] = "jupyterhub"
+# chart_name = get_config('Chart.Name')
+# chart_version = get_config('Chart.Version')
+# if chart_name and chart_version:
+#     common_labels['chart'] = "{}-{}".format(
+#         chart_name, chart_version.replace('+', '_'),
+#     )
+# release = get_config('Release.Name')
+# if release:
+#     common_labels['release'] = release
 
-c.KubeSpawner.namespace = os.environ.get('POD_NAMESPACE', 'default')
+# c.KubeSpawner.namespace = os.environ.get('POD_NAMESPACE', 'default')
 
 # Max number of consecutive failures before the Hub restarts itself
 # requires jupyterhub 0.9.2
@@ -351,41 +351,41 @@ c.JupyterHub.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
 # set_config_if_not_none(c.Authenticator, 'admin_users', 'auth.admin.users')
 # set_config_if_not_none(c.Authenticator, 'whitelist', 'auth.whitelist.users')
 
-c.JupyterHub.services = []
+# c.JupyterHub.services = []
 
-if get_config('cull.enabled', False):
-    cull_cmd = [
-        '/usr/local/bin/cull_idle_servers.py',
-    ]
-    base_url = c.JupyterHub.get('base_url', '/')
-    cull_cmd.append(
-        '--url=http://127.0.0.1:8081' + url_path_join(base_url, 'hub/api')
-    )
+# if get_config('cull.enabled', False):
+#     cull_cmd = [
+#         '/usr/local/bin/cull_idle_servers.py',
+#     ]
+#     base_url = c.JupyterHub.get('base_url', '/')
+#     cull_cmd.append(
+#         '--url=http://127.0.0.1:8081' + url_path_join(base_url, 'hub/api')
+#     )
 
-    cull_timeout = get_config('cull.timeout')
-    if cull_timeout:
-        cull_cmd.append('--timeout=%s' % cull_timeout)
+#     cull_timeout = get_config('cull.timeout')
+#     if cull_timeout:
+#         cull_cmd.append('--timeout=%s' % cull_timeout)
 
-    cull_every = get_config('cull.every')
-    if cull_every:
-        cull_cmd.append('--cull-every=%s' % cull_every)
+#     cull_every = get_config('cull.every')
+#     if cull_every:
+#         cull_cmd.append('--cull-every=%s' % cull_every)
 
-    cull_concurrency = get_config('cull.concurrency')
-    if cull_concurrency:
-        cull_cmd.append('--concurrency=%s' % cull_concurrency)
+#     cull_concurrency = get_config('cull.concurrency')
+#     if cull_concurrency:
+#         cull_cmd.append('--concurrency=%s' % cull_concurrency)
 
-    if get_config('cull.users'):
-        cull_cmd.append('--cull-users')
+#     if get_config('cull.users'):
+#         cull_cmd.append('--cull-users')
 
-    cull_max_age = get_config('cull.maxAge')
-    if cull_max_age:
-        cull_cmd.append('--max-age=%s' % cull_max_age)
+#     cull_max_age = get_config('cull.maxAge')
+#     if cull_max_age:
+#         cull_cmd.append('--max-age=%s' % cull_max_age)
 
-    c.JupyterHub.services.append({
-        'name': 'cull-idle',
-        'admin': True,
-        'command': cull_cmd,
-    })
+#     c.JupyterHub.services.append({
+#         'name': 'cull-idle',
+#         'admin': True,
+#         'command': cull_cmd,
+#     })
 
 # for name, service in get_config('hub.services', {}).items():
 #     # jupyterhub.services is a list of dicts, but
@@ -426,7 +426,7 @@ if not cloud_metadata.get('enabled', False):
     c.KubeSpawner.init_containers.append(ip_block_container)
 
 
-if get_config('debug.enabled', False):
+if get_config('mlhub.debug', False):
     c.JupyterHub.log_level = 'DEBUG'
     c.Spawner.debug = True
 

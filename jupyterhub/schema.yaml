@@ -1,6 +1,23 @@
 title: Config
 type: object
 properties:
+
+  mlhub:
+    secretToken:
+        type: string
+        description: |
+          A 32-byte cryptographically secure randomly generated string used to secure communications
+          between the hub and the configurable-http-proxy.
+
+          ```sh
+          # to generate a value, run
+          openssl rand -hex 32
+          ```
+
+          Changing this value will cause the proxy and hub pods to restart. It is good security
+          practice to rotate these values over time. If this secret leaks, *immediately* change
+          it to something else, or user data can be compromised
+
   hub:
     type: object
     properties:
@@ -432,20 +449,6 @@ properties:
   proxy:
     type: object
     properties:
-      secretToken:
-        type: string
-        description: |
-          A 32-byte cryptographically secure randomly generated string used to secure communications
-          between the hub and the configurable-http-proxy.
-
-          ```sh
-          # to generate a value, run
-          openssl rand -hex 32
-          ```
-
-          Changing this value will cause the proxy and hub pods to restart. It is good security
-          practice to rotate these values over time. If this secret leaks, *immediately* change
-          it to something else, or user data can be compromised
       service:
         type: object
         description: |
